@@ -1,0 +1,41 @@
+1. Requirements
+    To build a compiler from a C-like language to a subset of instructions of MIPS Assembly simulated on MARS 4.4
+    The subset is confined to:
+        1. only integers
+
+2. Types
+    1. int
+        interger, 4 bytes
+    2. short
+        2 bytes
+    3. char
+        1 byte
+    4. Corresponding array types
+        For example, int foo[3], int foo[2][4].
+    5. Corresponding pointer types
+        to be continued
+
+3. Lexical
+    1. number
+        decimal and hex
+    2. identifier
+        equivalent with C
+
+
+4. Grammar
+    1. Expressions
+        a = a+b-c*d/e;
+        a = 'a';
+    2. if-statement
+        if (expr) stmt
+    3. while-statement
+        while (expr) stmt
+    4. do-while-statement
+        do stmt while (expr)
+    5. function definition
+        <type> name(int a, short b, char c) {}
+    6. type definition
+        <type> a,b,c;
+
+5. Comment
+    '//xxxx'

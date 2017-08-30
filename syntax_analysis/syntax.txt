@@ -1,0 +1,12 @@
+1. const
+    c -> _int_num_
+
+2. Type definition
+    td -> _type_ id_expr id_expr_add ';'
+    id_expr -> _id_  array_exp
+    id_expr_add -> ',' id_expr, id_expr_add
+    id_expr_add -> empty
+    array_exp -> empty
+    array_exp -> '[' + const + ']' array_exp
+
+3.

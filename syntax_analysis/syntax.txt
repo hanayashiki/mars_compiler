@@ -9,4 +9,13 @@
     array_exp -> empty
     array_exp -> '[' + const + ']' array_exp
 
-3.
+3. Statement
+    stmt -> f_stmt stmt
+    stmt -> '{' stmt '}'
+    f_stmt -> td
+    stmt -> empty
+
+    f_stmt -> assign
+    assign -> left '=' expr ';'
+
+    expr -> const | ...

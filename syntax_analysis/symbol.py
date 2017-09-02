@@ -11,13 +11,16 @@ class Const:
 class Id:
     type = None
     name = "Default"
+    offset = None
 
     def __hash__(self):
-        return self.name.__hash__
+        return self.name.__hash__()
 
 
 class Type:
+    len = 1
     value = None
+    width = 0
 
 
 class Array(Type):

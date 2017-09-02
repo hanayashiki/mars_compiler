@@ -1,1 +1,4 @@
-int
+char a;
+int b;
+char c;
+short d;

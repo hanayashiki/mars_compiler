@@ -1,5 +1,6 @@
 from lexical.token import *
 
+
 class Lexer:
     text = ""
     pos = 0
@@ -7,17 +8,18 @@ class Lexer:
     def __init__(self, text):
         self.text = text
 
-    def match(self, token, raise_exc=True):
+    def match(self, token, raise_exc=True, stay=False):
         self.jump()
         match = token.pattern.match(self.text, self.pos)
         if match:
-            self.pos = match.end()
+            if not stay:
+                self.pos = match.end()
             match_str = match.group(0)
             token.set(match_str)
             return True
         else:
             if raise_exc:
-                raise Exception("Match exception")
+                raise Exception("MatchError: need "+str(token.name)+' when: '+self.text[self.pos:])
             else:
                 return False
 
@@ -34,6 +36,12 @@ class Lexer:
     def match_const(self, expect):
         pass
 
+    def try_match(self, token):
+        return self.match(token, raise_exc=False)
+
     def jump(self):
-        while self.text[self.pos] in blanks:
+        while self.pos < len(self.text) and self.text[self.pos] in blanks:
             self.pos = self.pos + 1
+
+    def see(self, token):
+        return self.match(token, raise_exc=False, stay=True)

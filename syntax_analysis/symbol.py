@@ -12,9 +12,13 @@ class Id:
     type = None
     name = "Default"
     offset = None
+    use_stamp = 0
 
     def __hash__(self):
         return self.name.__hash__()
+
+    def __eq__(self, other):
+        return self.name == other.name
 
 
 class Type:

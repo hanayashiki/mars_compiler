@@ -1,6 +1,7 @@
 from lexical import token
 from syntax_analysis.symbol import *
 
+
 def const():
     """to be extended"""
     num_token = token.Int()

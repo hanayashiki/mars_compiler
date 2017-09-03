@@ -6,6 +6,7 @@ from syntax_analysis import const
 lex_analyzer = None
 sym_table = None
 
+
 def _type_():
     type_token = token.Type()
     lex_analyzer.match(type_token)
@@ -27,7 +28,7 @@ def id_expr(inh_type):
 
     #print("id.name:"+id.name)
     #print("id.type.width:"+str(id.type.width))
-    print(id.type.value+" "+id.name)
+    #print(id.type.value+" "+id.name)
     sym_table.add_symbol(id)
 
     #sym_table.display()

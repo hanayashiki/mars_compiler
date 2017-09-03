@@ -2,3 +2,5 @@ char a;
 int b;
 char c;
 short d;
+a = 1;
+b = 2;

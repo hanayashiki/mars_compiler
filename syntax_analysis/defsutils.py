@@ -4,5 +4,5 @@ widths = {"int": 4,
 
 
 def get_width(type_name):
-    print(type_name)
+    #print(type_name)
     return widths[type_name]

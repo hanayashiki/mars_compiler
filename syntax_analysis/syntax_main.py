@@ -1,19 +1,23 @@
 from lexical import lexer
 from syntax_analysis import symbol_table
 from syntax_analysis import defs, statement, const
+from assembly import generator, regs
 
 
 text = open("testcode.txt", 'r').read()
 
 lex_analyzer = lexer.Lexer(text)
 sym_table = symbol_table.SymbolTable()
-
+rgs = regs.Regs([16, 17, 18, 19, 20, 21, 22, 23])
+gen = generator.Generator(sym_table)
+gen.regs = rgs
 
 def _init():
     modules = [defs, statement, const]
     for module in modules:
         module.lex_analyzer = lex_analyzer
         module.sym_table = sym_table
+        module.gen = gen
 
 
 if __name__ == '__main__':

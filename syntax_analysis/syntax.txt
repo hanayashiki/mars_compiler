@@ -3,11 +3,13 @@
 
 2. Type definition
     td -> _type_ id_expr id_expr_add ';'
-    id_expr -> _id_  array_exp
+    id_expr -> _id_  array_exp opt_expr
     id_expr_add -> ',' id_expr, id_expr_add
     id_expr_add -> empty
     array_exp -> empty
     array_exp -> '[' + const + ']' array_exp
+
+    opt_expr -> empty | expr (to be extended)
 
 3. Statement
     stmt -> f_stmt stmt

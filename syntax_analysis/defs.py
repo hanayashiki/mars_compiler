@@ -1,7 +1,7 @@
 from syntax_analysis.defsutils import *
 from lexical import token
 from syntax_analysis.symbol import *
-from syntax_analysis import const
+from syntax_analysis import const, statement
 
 lex_analyzer = None
 sym_table = None
@@ -31,8 +31,17 @@ def id_expr(inh_type):
     #print(id.type.value+" "+id.name)
     sym_table.add_symbol(id)
 
+    opt_expr(id)
+
     #sym_table.display()
     return id
+
+
+def opt_expr(id):
+    if lex_analyzer.try_match(token.Equal()):
+        statement.expr(id)
+    else:
+        return
 
 
 def id_expr_add(inh_type):

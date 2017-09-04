@@ -14,7 +14,7 @@ labs = None
 
 def new_temp(s):
     temp_var = temps.new_temp(s)
-    sym_table.add_symbol(temp_var)
+    sym_table.add_symbol(temp_var, temp=True)
     return temp_var
 
 
@@ -59,6 +59,9 @@ def stmt():
 
 
 def f_stmt():
+    global temps
+    temps = Temps()
+    sym_table.temp_flush()
     if lex_analyzer.see(token.Type()):
         defs.td()
     elif lex_analyzer.see(token.If()):
@@ -68,7 +71,6 @@ def f_stmt():
 
 
 def assign():
-    temps = Temps()
     """left '=' expr ';' """
     id_token = token.Id()
     lex_analyzer.match(id_token)

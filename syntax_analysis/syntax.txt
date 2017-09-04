@@ -20,6 +20,10 @@
     f_stmt -> assign
     assign -> left '=' expr ';'
 
+    stmt -> condition
+    condition -> if '(' expr ')' stmt else_opt
+    else_opt -> empty | else stmt
+
 
 4. Expression
 

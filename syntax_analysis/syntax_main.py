@@ -21,12 +21,12 @@ def _init():
         module.lex_analyzer = lex_analyzer
         module.sym_table = sym_table
         module.gen = gen
-        module.labs = labels
+        module.labs = gen.labs
 
 
 if __name__ == '__main__':
     _init()
     statement.stmt()
     codefile.close()
-    #sym_table.display()
+    sym_table.display()
 

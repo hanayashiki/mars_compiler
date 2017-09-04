@@ -8,13 +8,18 @@ TYPE = 4
 COLON = 5  # ';'
 COMMA = 6  # ',"
 END = 7  # '$'
-LEFT_BRACE = 8 # '{'
-RIGHT_BRACE = 9 # '}'
+LEFT_BRACE = 8  # '{'
+RIGHT_BRACE = 9  # '}'
 EQUAL = 10  # '='
-LOGICAL_AND = 11 # '&&'
-LOGICAL_OR = 12 # '||'
-NOT_EQUAL = 13 # '!='
-DOUBLE_EQUAL = 14 # '=='
+LOGICAL_AND = 11  # '&&'
+LOGICAL_OR = 12  # '||'
+NOT_EQUAL = 13  # '!='
+DOUBLE_EQUAL = 14  # '=='
+IF = 15  # 'if'
+WHILE = 16  # 'while'
+ELSE = 17  # 'else'
+LEFT_PARENTHESIS = 18  # '('
+RIGHT_PARENTHESIS = 19  # ')'
 
 
 blanks = " \n\t\r"
@@ -45,6 +50,11 @@ _la_pat = re.compile(r'\&\&')
 _lo_pat = re.compile(r'\|\|')
 _de_pat = re.compile(r'\=\=')
 _ne_pat = re.compile(r'\!\=')
+_if_pat = re.compile(r'if')
+_while_pat = re.compile(r'while')
+_else_pat = re.compile(r'else')
+_lpr_pat = re.compile(r'\(')
+_rpr_pat = re.compile(r'\)')
 
 
 class Token:
@@ -164,7 +174,7 @@ class RightBrace(Token):
 
 class Equal(Token):
     value = None
-    name = RIGHT_BRACE
+    name = EQUAL
 
     def __init__(self):
         self.pattern = _eq_pat
@@ -212,6 +222,61 @@ class NotEqual(Token):
 
     def __init__(self):
         self.pattern = _ne_pat
+
+    def set(self, str):
+        pass
+
+
+class If(Token):
+    value = None
+    name = IF
+
+    def __init__(self):
+        self.pattern = _if_pat
+
+    def set(self, str):
+        pass
+
+
+class While(Token):
+    value = None
+    name = WHILE
+
+    def __init__(self):
+        self.pattern = _while_pat
+
+    def set(self, str):
+        pass
+
+
+class Else(Token):
+    value = None
+    name = ELSE
+
+    def __init__(self):
+        self.pattern = _else_pat
+
+    def set(self, str):
+        pass
+
+
+class LeftParenthesis(Token):
+    value = None
+    name = LEFT_PARENTHESIS
+
+    def __init__(self):
+        self.pattern = _lpr_pat
+
+    def set(self, str):
+        pass
+
+
+class RightParenthesis(Token):
+    value = None
+    name = RIGHT_PARENTHESIS
+
+    def __init__(self):
+        self.pattern = _rpr_pat
 
     def set(self, str):
         pass

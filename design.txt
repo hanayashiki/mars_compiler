@@ -37,7 +37,7 @@
             8. && ||
 
     2. if-statement
-        if (expr) stmt
+        if (expr) stmt [else if (expr) stmt else stmt]
     3. while-statement
         while (expr) stmt
     4. do-while-statement

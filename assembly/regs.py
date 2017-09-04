@@ -23,19 +23,20 @@ class Regs:
 
         for reg in self.use_table:
             if self.use_table[reg] and self.use_table[reg] == symbol:
-                print("#from $"+str(reg))
+                #print("#from $"+str(reg))
                 return reg
             elif not self.use_table[reg]:
                 usable_reg = reg # get a vacant reg
+
             if self.use_table[reg] and self.use_table[reg].use_stamp < oldest_use:
                 # get oldest used symbol
-                print("# use_stamp: %d, reg: %d" % (self.use_table[reg].use_stamp, reg))
+                #print("# use_stamp: %d, reg: %d" % (self.use_table[reg].use_stamp, reg))
                 oldest_use = self.use_table[reg].use_stamp
                 oldest_reg = reg
                 oldest_symbol = self.use_table[reg]
 
         if not usable_reg:
-            print("# from $" + str(oldest_reg))
+            #print("# from $" + str(oldest_reg))
             # can not find an empty reg
             self.use_table[oldest_reg] = symbol
             #      sw         $     x            offset       (    $       sp         )
@@ -43,7 +44,7 @@ class Regs:
             aprint(width2load[symbol.type.width], REG_, oldest_reg, symbol.offset, LB_, REG_, self.sp_reg, RB_)
             return oldest_reg
         else:
-            print("#from $" + str(usable_reg))
+            #print("#from $" + str(usable_reg))
             self.use_table[usable_reg] = symbol
             return usable_reg
 

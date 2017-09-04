@@ -9,6 +9,7 @@ lex_analyzer = None
 sym_table = None
 gen = Generator(None)
 temps = Temps()
+labs = None
 
 
 def new_temp(s):
@@ -17,19 +18,41 @@ def new_temp(s):
     return temp_var
 
 
+def condition():
+    """
+    condition -> if '(' expr ')' stmt else_opt
+    """
+    lex_analyzer.match(token.If())
+    lex_analyzer.match(token.LeftParenthesis())
+    cond = new_temp("int")
+    expr(cond)
+    lex_analyzer.match(token.RightParenthesis())
+    label = labs.new_label("if_false")
+    gen.jump_on_zero_instr(cond, label)
+    stmt()
+    label.implement()
+    else_opt()
+
+
+def else_opt():
+    if lex_analyzer.try_match(token.Else()):
+        stmt()
+    else:
+        pass
+
+
 def stmt():
     end_token = token.End()
     lbr_token = token.LeftBrace()
     if lex_analyzer.try_match(lbr_token):
-
+        #print("here")
         sym_table.push_table()
         stmt()
         rbr_token = token.LeftBrace()
         lex_analyzer.try_match(rbr_token)
         sym_table.pop_table()
-        return
-    elif lex_analyzer.try_match(end_token) or lex_analyzer.see(token.RightBrace()):
-        return
+    elif lex_analyzer.try_match(end_token) or lex_analyzer.see(token.RightBrace(), token.Else()):
+        pass
     else:
         f_stmt()
         stmt()
@@ -38,7 +61,9 @@ def stmt():
 def f_stmt():
     if lex_analyzer.see(token.Type()):
         defs.td()
-    else:
+    elif lex_analyzer.see(token.If()):
+        condition()
+    elif lex_analyzer.see(token.Id()):
         assign()
 
 
@@ -60,7 +85,7 @@ def assign():
     lex_analyzer.match(token.Colon())
 
 
-def expr(temp_var):
+def expr(top_var):
     """
     param: temporary symbol to store
     expr -> equation expr_tail
@@ -69,7 +94,9 @@ def expr(temp_var):
     """
     fetch_left = new_temp("int")
     equation(fetch_left)
+    temp_var = new_temp("int")
     expr_tail(temp_var, fetch_left)
+    gen.move_instr(top_var, temp_var)
 
 
 def expr_inh(top_var, inh_left, op):
@@ -102,7 +129,9 @@ def equation(top_var):
     """
     fetch_left = new_temp("int")
     inequation(fetch_left)
-    equation_tail(top_var, fetch_left)
+    temp_var = new_temp("int")
+    equation_tail(temp_var, fetch_left)
+    gen.move_instr(top_var, temp_var)
 
 
 def equation_inh(top_var, inh_left, op):
@@ -113,8 +142,7 @@ def equation_inh(top_var, inh_left, op):
         gen.equal_instr(left_tmp, inh_left, ine_tmp)
     elif op == '!=':
         gen.not_equal_instr(left_tmp, inh_left, ine_tmp)
-    else:
-        top_var.inherit(left_tmp)
+    equation_tail(top_var, left_tmp)
 
 
 def equation_tail(top_var, left_tmp):
@@ -128,8 +156,16 @@ def equation_tail(top_var, left_tmp):
 
 
 def inequation(temp_var):
-    const_sym = const.const()
-    gen.load_const_instr(temp_var, const_sym)
+    id_token = token.Id()
+    if lex_analyzer.see(token.Int()):
+        const_sym = const.const()
+        gen.load_const_instr(temp_var, const_sym)
+    elif lex_analyzer.match(id_token):
+        id_sym = sym_table.get_symbol(id_token)
+        print("# ine got token: "+id_token.value)
+        print("# ine got symbol: "+id_sym.name)
+        temp_var.inherit(id_sym)
+        gen.load_var(id_sym)
 
 
 

@@ -72,3 +72,10 @@ class Generator:
         aprint(BNE, REG_, reg2, REG_, reg3, new_label)
         aprint(LI, REG_, reg1, 0)
         new_label.implement()
+
+    def jump_on_zero_instr(self, sym_a, label):
+        reg1 = self.regs.get_reg(sym_a)
+        aprint(BEQZ, REG_, reg1, label)
+
+    def load_var(self, sym):
+        self.regs.get_reg(sym)

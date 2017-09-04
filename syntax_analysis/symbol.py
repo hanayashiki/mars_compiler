@@ -21,10 +21,12 @@ class Id:
         return self.name == other.name
 
     def inherit(self, prt):
+        print("# inherit : %s <- %s" % (self.name, prt.name))
         self.type = prt.type
         self.name = prt.name
         self.use_stamp = prt.use_stamp
         self.offset = prt.offset
+
 
 
 class Type:

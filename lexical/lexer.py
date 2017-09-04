@@ -23,9 +23,9 @@ class Lexer:
             else:
                 return False
 
-    def match_opt(self, *tokens, raise_exc=True):
+    def match_opt(self, *tokens, raise_exc=True, stay=False):
         for token in tokens:
-            if self.match(token, raise_exc=False):
+            if self.match(token, raise_exc=False, stay=stay):
                 return True
         if raise_exc:
             raise Exception("Match exception")
@@ -46,5 +46,5 @@ class Lexer:
         while self.pos < len(self.text) and self.text[self.pos] in blanks:
             self.pos = self.pos + 1
 
-    def see(self, token):
-        return self.match(token, raise_exc=False, stay=True)
+    def see(self, *token):
+        return self.match_opt(*token, raise_exc=False, stay=True)

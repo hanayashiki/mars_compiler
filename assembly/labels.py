@@ -14,7 +14,6 @@ class Label:
         assembly.printer.aprint("label_"+str(self.id)+":")
 
 
-
 class Labels:
     count = 0
 

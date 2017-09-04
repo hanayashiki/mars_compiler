@@ -13,6 +13,8 @@ RIGHT_BRACE = 9 # '}'
 EQUAL = 10  # '='
 LOGICAL_AND = 11 # '&&'
 LOGICAL_OR = 12 # '||'
+NOT_EQUAL = 13 # '!='
+DOUBLE_EQUAL = 14 # '=='
 
 
 blanks = " \n\t\r"
@@ -41,6 +43,8 @@ _rbr_pat = re.compile(r'}')
 _eq_pat = re.compile(r'\=')
 _la_pat = re.compile(r'\&\&')
 _lo_pat = re.compile(r'\|\|')
+_de_pat = re.compile(r'\=\=')
+_ne_pat = re.compile(r'\!\=')
 
 
 class Token:
@@ -186,6 +190,28 @@ class LogicalOr(Token):
 
     def __init__(self):
         self.pattern = _lo_pat
+
+    def set(self, str):
+        pass
+
+
+class DoubleEqual(Token):
+    value = None
+    name = DOUBLE_EQUAL
+
+    def __init__(self):
+        self.pattern = _de_pat
+
+    def set(self, str):
+        pass
+
+
+class NotEqual(Token):
+    value = None
+    name = NOT_EQUAL
+
+    def __init__(self):
+        self.pattern = _ne_pat
 
     def set(self, str):
         pass

@@ -84,8 +84,6 @@ def expr_inh(top_var, inh_left, op):
     expr_tail(top_var, left_tmp)
 
 
-
-
 def expr_tail(top_var, left_tmp):
     if lex_analyzer.try_match_opt(token.LogicalAnd()):
         expr_inh(top_var, left_tmp, 'AND')
@@ -93,10 +91,45 @@ def expr_tail(top_var, left_tmp):
         expr_inh(top_var, left_tmp, 'OR')
     else:
         top_var.inherit(left_tmp)
+
+
+def equation(top_var):
+    """
+    equation -> inequation equation_tail
+    equation_inh -> inequation equation_tail
+    equation_tail -> ( '==' | '!=' ) equation_inh
+    equation_tail -> empty
+    """
+    fetch_left = new_temp("int")
+    inequation(fetch_left)
+    equation_tail(top_var, fetch_left)
+
+
+def equation_inh(top_var, inh_left, op):
+    ine_tmp = new_temp('int')
+    inequation(ine_tmp)
+    left_tmp = new_temp("int")
+    if op == '==':
+        gen.equal_instr(left_tmp, inh_left, ine_tmp)
+    elif op == '!=':
+        gen.not_equal_instr(left_tmp, inh_left, ine_tmp)
+    else:
+        top_var.inherit(left_tmp)
+
+
+def equation_tail(top_var, left_tmp):
+    if lex_analyzer.try_match_opt(token.DoubleEqual()):
+        equation_inh(top_var, left_tmp, '==')
+    elif lex_analyzer.try_match_opt(token.NotEqual()):
+        equation_inh(top_var, left_tmp, '!=')
+    else:
+        top_var.inherit(left_tmp)
         return
 
 
-def equation(temp_var):
+def inequation(temp_var):
     const_sym = const.const()
     gen.load_const_instr(temp_var, const_sym)
+
+
 

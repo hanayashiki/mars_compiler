@@ -24,6 +24,11 @@
 4. Expression
 
     expr -> equation expr_tail
-    expr -> expr_inh expr_tail
+    expr_inh -> equation expr_tail
     expr_tail -> ( '&&' | '||' ) expr_inh , see '&&', '||'
     expr_tail -> empty, see other
+
+    equation -> inequation equation_tail
+    equation_inh -> inequation equation_tail
+    equation_tail -> ( '==' | '!=' ) equation_inh
+    equation_tail -> empty

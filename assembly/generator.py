@@ -52,3 +52,23 @@ class Generator:
         aprint(NOP)
         aprint(LI, REG_, reg1, 1)
         new_label.implement()
+
+    def equal_instr(self, sym_a, sym_b, sym_c):
+        new_label = self.labs.new_label()
+        reg1 = self.regs.get_reg(sym_a)
+        aprint(LI, REG_, reg1, 1)
+        reg2 = self.regs.get_reg(sym_b)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(BEQ, REG_, reg2, REG_, reg3, new_label)
+        aprint(LI, REG_, reg1, 0)
+        new_label.implement()
+
+    def not_equal_instr(self, sym_a, sym_b, sym_c):
+        new_label = self.labs.new_label()
+        reg1 = self.regs.get_reg(sym_a)
+        aprint(LI, REG_, reg1, 1)
+        reg2 = self.regs.get_reg(sym_b)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(BNE, REG_, reg2, REG_, reg3, new_label)
+        aprint(LI, REG_, reg1, 0)
+        new_label.implement()

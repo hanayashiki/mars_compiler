@@ -4,7 +4,8 @@ from syntax_analysis import defs, statement, const
 from assembly import generator, regs, labels
 
 
-text = open("testcode.txt", 'r').read()
+codefile = open("testcode.txt", 'r')
+text = codefile.read()
 
 lex_analyzer = lexer.Lexer(text)
 sym_table = symbol_table.SymbolTable()
@@ -26,5 +27,6 @@ def _init():
 if __name__ == '__main__':
     _init()
     statement.stmt()
+    codefile.close()
     #sym_table.display()
 

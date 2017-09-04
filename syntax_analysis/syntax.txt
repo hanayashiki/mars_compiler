@@ -18,4 +18,9 @@
     f_stmt -> assign
     assign -> left '=' expr ';'
 
-    expr -> const | ...
+
+4. Expression
+
+    expr -> equation expr_tail
+    expr_tail -> ( '&&' | '||' ) expr , see '&&', '||'
+    expr_tail -> empty, see other

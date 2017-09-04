@@ -39,6 +39,9 @@ class Lexer:
     def try_match(self, token):
         return self.match(token, raise_exc=False)
 
+    def try_match_opt(self, *tokens):
+        return self.match_opt(*tokens, raise_exc=False)
+
     def jump(self):
         while self.pos < len(self.text) and self.text[self.pos] in blanks:
             self.pos = self.pos + 1

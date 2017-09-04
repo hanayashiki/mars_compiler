@@ -1,6 +1,3 @@
-char a;
-int b;
-char c;
-short d;
-a = 1;
-b = 2;
+int a; a = 1;
+a = 5 && 4 && 3;
+

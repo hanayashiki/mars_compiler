@@ -11,6 +11,9 @@ END = 7  # '$'
 LEFT_BRACE = 8 # '{'
 RIGHT_BRACE = 9 # '}'
 EQUAL = 10  # '='
+LOGICAL_AND = 11 # '&&'
+LOGICAL_OR = 12 # '||'
+
 
 blanks = " \n\t\r"
 _int_tag_ = r"(int)"
@@ -36,6 +39,8 @@ _end_pat = re.compile(r'$')
 _lbr_pat = re.compile(r'{')
 _rbr_pat = re.compile(r'}')
 _eq_pat = re.compile(r'\=')
+_la_pat = re.compile(r'\&\&')
+_lo_pat = re.compile(r'\|\|')
 
 
 class Token:
@@ -152,12 +157,35 @@ class RightBrace(Token):
     def set(self, str):
         pass
 
+
 class Equal(Token):
     value = None
     name = RIGHT_BRACE
 
     def __init__(self):
         self.pattern = _eq_pat
+
+    def set(self, str):
+        pass
+
+
+class LogicalAnd(Token):
+    value = None
+    name = LOGICAL_AND
+
+    def __init__(self):
+        self.pattern = _la_pat
+
+    def set(self, str):
+        pass
+
+
+class LogicalOr(Token):
+    value = None
+    name = LOGICAL_OR
+
+    def __init__(self):
+        self.pattern = _lo_pat
 
     def set(self, str):
         pass

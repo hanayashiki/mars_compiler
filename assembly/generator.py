@@ -6,6 +6,7 @@ from assembly.printer import *
 class Generator:
     base = 0
     regs = None
+    labs = None
     sym_table = None
 
     op_name2instr = {}
@@ -23,4 +24,31 @@ class Generator:
     def move_instr(self, sym_a, sym_b):
         reg1 = self.regs.get_reg(sym_a)
         reg2 = self.regs.get_reg(sym_b)
-        aprint(MOVE, REG_, reg1, reg2)
+        aprint(MOVE, REG_, reg1, REG_, reg2)
+
+    def logical_or_instr(self, sym_a, sym_b, sym_c):
+        new_label = self.labs.new_label()
+        reg1 = self.regs.get_reg(sym_a)
+        aprint(LI, REG_, reg1, 1)
+        # li $reg1 1
+        reg2 = self.regs.get_reg(sym_b)
+        aprint(BNEZ, REG_, reg2, new_label)
+        aprint(NOP)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(BNEZ, REG_, reg3, new_label)
+        aprint(NOP)
+        new_label.implement()
+        aprint(new_label)
+
+    def logical_and_instr(self, sym_a, sym_b, sym_c):
+        new_label = self.labs.new_label()
+        reg1 = self.regs.get_reg(sym_a)
+        aprint(LI, REG_, reg1, 0)
+        reg2 = self.regs.get_reg(sym_b)
+        aprint(BEQZ, REG_, reg2, new_label)
+        aprint(NOP)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(BEQZ, REG_, reg3, new_label)
+        aprint(NOP)
+        aprint(LI, REG_, reg1, 1)
+        new_label.implement()

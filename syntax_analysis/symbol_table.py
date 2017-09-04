@@ -1,5 +1,6 @@
 from syntax_analysis.defsutils import get_width
 
+
 class SymbolTable():
     """ A extended set to record symbols at current hierarchy """
     table_stack = []

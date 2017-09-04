@@ -20,6 +20,12 @@ class Id:
     def __eq__(self, other):
         return self.name == other.name
 
+    def inherit(self, prt):
+        self.type = prt.type
+        self.name = prt.name
+        self.use_stamp = prt.use_stamp
+        self.offset = prt.offset
+
 
 class Type:
     len = 1

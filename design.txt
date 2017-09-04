@@ -26,6 +26,16 @@
     1. Expressions
         a = a+b-c*d/e;
         a = 'a';
+
+        Lv  1. const, id, (expression)
+            2. postfix-expression [ expression ]
+            3. * / %
+            4. + -
+            5. << >>
+            6. >= > < <=
+            7. == !=
+            8. && ||
+
     2. if-statement
         if (expr) stmt
     3. while-statement

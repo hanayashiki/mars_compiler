@@ -73,17 +73,24 @@ def expr(temp_var):
 
 
 def expr_inh(top_var, inh_left, op):
+
+    eq_tmp = new_temp("int")
+    equation(eq_tmp)
+    left_tmp = new_temp("int")
     if op == 'AND':
-        eq_tmp = new_temp("int")
-        equation(eq_tmp)
-        left_tmp = new_temp("int")
         gen.logical_and_instr(left_tmp, inh_left, eq_tmp)
-        expr_tail(top_var, left_tmp)
+    elif op == 'OR':
+        gen.logical_or_instr(left_tmp, inh_left, eq_tmp)
+    expr_tail(top_var, left_tmp)
+
+
 
 
 def expr_tail(top_var, left_tmp):
     if lex_analyzer.try_match_opt(token.LogicalAnd()):
         expr_inh(top_var, left_tmp, 'AND')
+    elif lex_analyzer.try_match_opt(token.LogicalOr()):
+        expr_inh(top_var, left_tmp, 'OR')
     else:
         top_var.inherit(left_tmp)
         return

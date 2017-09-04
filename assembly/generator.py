@@ -37,8 +37,8 @@ class Generator:
         reg3 = self.regs.get_reg(sym_c)
         aprint(BNEZ, REG_, reg3, new_label)
         aprint(NOP)
+        aprint(LI, REG_, reg1, 0)
         new_label.implement()
-        aprint(new_label)
 
     def logical_and_instr(self, sym_a, sym_b, sym_c):
         new_label = self.labs.new_label()

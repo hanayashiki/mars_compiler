@@ -1,4 +1,3 @@
-
 import datetime
 
 now = datetime.datetime.now()
@@ -22,6 +21,7 @@ RB_ = ")"
 
 output = open('mips.asm' , 'w')
 print('# '+now.strftime('%Y-%m-%d %H:%M:%S'), file=output)
+
 
 def aprint(*args):
     global output

@@ -22,5 +22,6 @@
 4. Expression
 
     expr -> equation expr_tail
-    expr_tail -> ( '&&' | '||' ) expr , see '&&', '||'
+    expr -> expr_inh expr_tail
+    expr_tail -> ( '&&' | '||' ) expr_inh , see '&&', '||'
     expr_tail -> empty, see other

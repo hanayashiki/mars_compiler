@@ -64,25 +64,28 @@ def expr(temp_var):
     """
     param: temporary symbol to store
     expr -> equation expr_tail
-    expr_tail -> ( '&&' | '||' ) expr , see '&&', '||'
+    expr_tail -> ( '&&' | '||' ) expr_inh , see '&&', '||'
     expr_tail -> empty, see other
     """
-    temp_var1 = new_temp("int")
-    equation(temp_var1)
-    temp_var2 = new_temp("int")
-    expr_tail(temp_var2, temp_var1)
-
-    gen.move_instr(temp_var, temp_var2)
+    fetch_left = new_temp("int")
+    equation(fetch_left)
+    expr_tail(temp_var, fetch_left)
 
 
-def expr_tail(temp_var, temp_inh):
+def expr_inh(top_var, inh_left, op):
+    if op == 'AND':
+        eq_tmp = new_temp("int")
+        equation(eq_tmp)
+        left_tmp = new_temp("int")
+        gen.logical_and_instr(left_tmp, inh_left, eq_tmp)
+        expr_tail(top_var, left_tmp)
+
+
+def expr_tail(top_var, left_tmp):
     if lex_analyzer.try_match_opt(token.LogicalAnd()):
-        # and
-        temp_var1 = new_temp("int")
-        expr(temp_var1)
-        gen.logical_and_instr(temp_var, temp_inh, temp_var1)
+        expr_inh(top_var, left_tmp, 'AND')
     else:
-        temp_var.inherit(temp_inh)
+        top_var.inherit(left_tmp)
         return
 
 

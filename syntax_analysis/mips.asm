@@ -1,33 +1,31 @@
-# 2017-09-04 15:40:12
+# 2017-09-04 17:34:14
 li $23 1 
 move $22 $23 
-move $21 $22 
-li $20 5 
-li $19 4 
-li $18 3 
-move $17 $18 
-li $16 0 
-beqz $19 label_0 
+li $21 5 
+li $20 4 
+li $19 0 
+beqz $21 label_0 
 nop 
-beqz $17 label_0 
+beqz $20 label_0 
 nop 
-li $16 1 
+li $19 1 
 label_0: 
-sw $23 8 ( $0 ) 
-lw $23 28 ( $0 ) 
-move $23 $16 
-sw $21 0 ( $0 ) 
-lw $21 24 ( $0 ) 
-li $21 0 
-beqz $20 label_1 
+li $18 3 
+li $17 0 
+beqz $19 label_1 
 nop 
-beqz $23 label_1 
+beqz $18 label_1 
 nop 
-li $21 1 
+li $17 1 
 label_1: 
-sw $22 4 ( $0 ) 
-lw $22 16 ( $0 ) 
-move $22 $21 
-sw $18 44 ( $0 ) 
-lw $18 0 ( $0 ) 
-move $18 $22 
+li $16 0 
+sw $23 8 ( $0 ) 
+lw $23 40 ( $0 ) 
+li $23 0 
+beqz $17 label_2 
+nop 
+beqz $16 label_2 
+nop 
+li $23 1 
+label_2: 
+move $22 $23 

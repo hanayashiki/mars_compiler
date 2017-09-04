@@ -13,6 +13,7 @@ gen = generator.Generator(sym_table)
 gen.regs = rgs
 gen.labs = labels.Labels()
 
+
 def _init():
     modules = [defs, statement, const]
     for module in modules:

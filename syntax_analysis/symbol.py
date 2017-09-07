@@ -25,7 +25,7 @@ class Id:
         self.type = prt.type
         self.name = prt.name
         self.use_stamp = prt.use_stamp
-        self.offset = min(prt.offset, self.offset)
+        self.offset = prt.offset
         prt.offset = self.offset
 
 

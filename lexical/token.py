@@ -20,6 +20,8 @@ WHILE = 16  # 'while'
 ELSE = 17  # 'else'
 LEFT_PARENTHESIS = 18  # '('
 RIGHT_PARENTHESIS = 19  # ')'
+ADD = 20  # '+'
+MINUS = 21 # '-'
 
 
 blanks = " \n\t\r"

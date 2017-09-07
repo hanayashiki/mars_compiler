@@ -80,5 +80,22 @@ class Generator:
         aprint(BEQZ, REG_, reg1, label)
         aprint(NOP)
 
+    def jump_instr(self, label):
+        aprint(J, label)
+        aprint(NOP)
+
     def load_var(self, sym):
         self.regs.get_reg(sym)
+
+    def add_instr(self, sym_a, sym_b, sym_c):
+        reg1 = self.regs.get_reg(sym_a)
+        reg2 = self.regs.get_reg(sym_b)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(ADD, REG_, reg1, REG_, reg2, REG_, reg3)
+
+    def sub_instr(self, sym_a, sym_b, sym_c):
+        reg1 = self.regs.get_reg(sym_a)
+        reg2 = self.regs.get_reg(sym_b)
+        reg3 = self.regs.get_reg(sym_c)
+        aprint(SUB, REG_, reg1, REG_, reg2, REG_, reg3)
+

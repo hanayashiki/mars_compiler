@@ -34,6 +34,24 @@ def condition():
     else_opt()
 
 
+def while_loop():
+    """
+    while_loop -> while_loop '(' expr ')' stmt
+    """
+    lex_analyzer.match(token.While())
+    lex_analyzer.match(token.LeftParenthesis())
+    label_check = labs.new_label("while_check")
+    label_out = labs.new_label("while_out")
+    label_check.implement()
+    cond = new_temp("int")
+    expr(cond)
+    gen.jump_on_zero_instr(cond, label_out)
+    lex_analyzer.match(token.RightParenthesis())
+    stmt()
+    gen.jump_instr(label_check)
+    label_out.implement()
+
+
 def else_opt():
     if lex_analyzer.try_match(token.Else()):
         stmt()
@@ -64,10 +82,12 @@ def f_stmt():
     sym_table.temp_flush()
     if lex_analyzer.see(token.Type()):
         defs.td()
-    elif lex_analyzer.see(token.If()):
-        condition()
     elif lex_analyzer.see(token.Id()):
         assign()
+    elif lex_analyzer.see(token.If()):
+        condition()
+    elif lex_analyzer.see(token.While()):
+        while_loop()
 
 
 def assign():
@@ -130,7 +150,7 @@ def equation(top_var):
     equation_tail -> empty
     """
     fetch_left = new_temp("int")
-    inequation(fetch_left)
+    sum(fetch_left)
     temp_var = new_temp("int")
     equation_tail(temp_var, fetch_left)
     gen.move_instr(top_var, temp_var)
@@ -138,7 +158,7 @@ def equation(top_var):
 
 def equation_inh(top_var, inh_left, op):
     ine_tmp = new_temp('int')
-    inequation(ine_tmp)
+    sum(ine_tmp)
     left_tmp = new_temp("int")
     if op == '==':
         gen.equal_instr(left_tmp, inh_left, ine_tmp)
@@ -157,8 +177,9 @@ def equation_tail(top_var, left_tmp):
         return
 
 
-def inequation(temp_var):
+def factor(temp_var):
     id_token = token.Id()
+
     if lex_analyzer.see(token.Int()):
         const_sym = const.const()
         gen.load_const_instr(temp_var, const_sym)
@@ -169,6 +190,31 @@ def inequation(temp_var):
         temp_var.inherit(id_sym)
         gen.load_var(id_sym)
 
+
 def sum(top_var):
+    fetch_left = new_temp("int")
+    factor(fetch_left)
+    temp_var = new_temp("int")
+    sum_tail(temp_var, fetch_left)
+    gen.move_instr(top_var, temp_var)
 
 
+def sum_tail(top_var, left_tmp):
+    if lex_analyzer.try_match_opt(token.Add()):
+        sum_inh(top_var, left_tmp, '+')
+    elif lex_analyzer.try_match_opt(token.Minus()):
+        sum_inh(top_var, left_tmp, '-')
+    else:
+        top_var.inherit(left_tmp)
+        return
+
+
+def sum_inh(top_var, inh_left, op):
+    factor_tmp = new_temp('int')
+    factor(factor_tmp)
+    left_tmp = new_temp("int")
+    if op == '+':
+        gen.add_instr(left_tmp, inh_left, factor_tmp)
+    elif op == '-':
+        gen.sub_instr(left_tmp, inh_left, factor_tmp)
+    sum_tail(top_var, left_tmp)

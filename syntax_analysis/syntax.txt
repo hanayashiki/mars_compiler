@@ -24,6 +24,11 @@
     condition -> if '(' expr ')' stmt else_opt
     else_opt -> empty | else stmt
 
+    stmt -> while_loop
+    condition -> while_loop '(' expr ')' stmt
+
+    d
+
 
 4. Expression
 

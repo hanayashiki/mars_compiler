@@ -52,7 +52,13 @@ class SymbolTable():
     def get_symbol(self, token):
         if token.value[0] == '%':
             return self.temps[token.value]
-        return self.top_table[token.value]
+
+        table_num = len(self.table_stack)-1
+        table = self.table_stack[table_num]
+        while not token.value in table:
+            table_num -= 1
+            table = self.table_stack[table_num]
+        return table[token.value]
 
     def temp_flush(self):
         self.temps = {}

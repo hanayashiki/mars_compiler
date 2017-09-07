@@ -1,5 +1,6 @@
 from lexical.token import *
 
+reserved = [While(), If(), Else()]
 
 class Lexer:
     text = ""
@@ -15,6 +16,10 @@ class Lexer:
             if not stay:
                 self.pos = match.end()
             match_str = match.group(0)
+            if token not in reserved:
+                for res_token in reserved:
+                    if res_token.pattern.match(match_str):
+                        return False
             token.set(match_str)
             return True
         else:

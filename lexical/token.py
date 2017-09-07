@@ -31,7 +31,7 @@ _char_tag_ = r"(char)"
 _type_ = _int_tag_ + '|' + _short_tag_ + '|' + _char_tag_
 _type_pat = re.compile(_type_)
 
-_int_dec_ = r"\d+"
+_int_dec_ = r"-?\d+"
 _int_hex_ = r"0x[A-F0-9]+"
 _int_num_ = _int_hex_ + '|' + _int_dec_
 
@@ -57,12 +57,16 @@ _while_pat = re.compile(r'while')
 _else_pat = re.compile(r'else')
 _lpr_pat = re.compile(r'\(')
 _rpr_pat = re.compile(r'\)')
+_add_pat = re.compile(r'\+')
+_minus_pat = re.compile(r'\-')
 
 
 class Token:
     pattern = ""
     name = -1
 
+    def __eq__(self, other):
+        return self.name == other.name
 
 class Int(Token):
     value = None
@@ -73,6 +77,7 @@ class Int(Token):
 
     def set(self, str):
         self.value = eval(str)
+
 
 
 class Id(Token):
@@ -279,6 +284,28 @@ class RightParenthesis(Token):
 
     def __init__(self):
         self.pattern = _rpr_pat
+
+    def set(self, str):
+        pass
+
+
+class Add(Token):
+    value = None
+    name = ADD
+
+    def __init__(self):
+        self.pattern = _add_pat
+
+    def set(self, str):
+        pass
+
+
+class Minus(Token):
+    value = None
+    name = MINUS
+
+    def __init__(self):
+        self.pattern = _minus_pat
 
     def set(self, str):
         pass

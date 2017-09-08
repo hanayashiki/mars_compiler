@@ -68,6 +68,7 @@ class Token:
     def __eq__(self, other):
         return self.name == other.name
 
+
 class Int(Token):
     value = None
     name = INT
@@ -77,7 +78,6 @@ class Int(Token):
 
     def set(self, str):
         self.value = eval(str)
-
 
 
 class Id(Token):

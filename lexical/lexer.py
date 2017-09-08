@@ -2,6 +2,7 @@ from lexical.token import *
 
 reserved = [While(), If(), Else()]
 
+
 class Lexer:
     text = ""
     pos = 0

@@ -1,6 +1,3 @@
-import datetime
-
-now = datetime.datetime.now()
 
 LI = "li"
 LW = "lw"
@@ -14,19 +11,19 @@ BEQZ = "beqz"
 BNEZ = "bnez"
 BNE = "bne"
 BEQ = "beq"
-J = "J"
+J = "j"
 NOP = "nop"
 ADD = "add"
+ADDI = "addi"
 SUB = "sub"
+MUL = "mul"
 width2load = {4:"lw", 2:"lh", 1:"lb"}
 width2save = {4:"sw", 2:"sh", 1:"sb"}
 REG_ = "$"
 LB_ = "("
 RB_ = ")"
 
-output = open('mips.asm' , 'w')
-print('# '+now.strftime('%Y-%m-%d %H:%M:%S'), file=output)
-
+AT = "1"
 
 def aprint(*args):
     global output

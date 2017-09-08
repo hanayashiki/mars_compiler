@@ -1,4 +1,4 @@
-import syntax_analysis.symbol
+from syntax_analysis.symbol import *
 import syntax_analysis.symbol_table
 from assembly.printer import *
 
@@ -17,9 +17,12 @@ class Generator:
     def triple_instr(self, sym_a, sym_op, sym_b, sym_c):
         pass
 
-    def load_const_instr(self, sym_a, sym_b):
+    def load_const_instr(self, sym_a, sym_or_num_b):
         reg1 = self.regs.get_reg(sym_a)
-        aprint(LI, REG_, reg1, sym_b.value)
+        if isinstance(sym_or_num_b, Const):
+            aprint(LI, REG_, reg1, sym_or_num_b.value)
+        else:
+            aprint(LI, REG_, reg1, sym_or_num_b)
 
     def move_instr(self, sym_a, sym_b):
         reg1 = self.regs.get_reg(sym_a)
@@ -98,4 +101,23 @@ class Generator:
         reg2 = self.regs.get_reg(sym_b)
         reg3 = self.regs.get_reg(sym_c)
         aprint(SUB, REG_, reg1, REG_, reg2, REG_, reg3)
+
+    def mult_const_instr(self, sym_a, sym_b, number):
+        reg1 = self.regs.get_reg(sym_a)
+        reg2 = self.regs.get_reg(sym_b)
+        aprint(MUL, REG_, reg1, REG_, reg2, number)
+
+    def fetch_addr_instr(self, sym_a, sym_b, sym_c_offset):
+        """ move addr of sym_a to sym_b """
+        self.regs.load_addr(sym_a, sym_b, sym_c_offset)
+
+    def fetch_by_addr(self, sym_a, sym_addr):
+        reg1 = self.regs.get_reg(sym_a)
+        reg2 = self.regs.get_reg(sym_addr)
+        aprint(LW, REG_, reg1, LB_, REG_, reg2, RB_)
+
+    def save_by_addr(self, sym_a, sym_addr):
+        reg1 = self.regs.get_reg(sym_a)
+        reg2 = self.regs.get_reg(sym_addr)
+        aprint(SW, REG_, reg1, LB_, REG_, reg2, RB_)
 

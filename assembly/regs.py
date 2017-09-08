@@ -48,3 +48,13 @@ class Regs:
             self.use_table[usable_reg] = symbol
             return usable_reg
 
+    def load_addr(self, sym_a, sym_b, sym_offset=None):
+        """runtime load the address of sym_a to sym_b"""
+        aprint("# load_addr implemented")
+        reg_b = self.get_reg(sym_b)
+        if not sym_offset:
+            aprint(ADDI, REG_, reg_b, REG_, self.sp_reg, sym_a.offset)
+        else:
+            reg_offset = self.get_reg(sym_offset)
+            aprint(ADDI, REG_, AT, REG_, reg_offset, sym_a.offset)
+            aprint(ADD, REG_, reg_b, REG_, AT, REG_, self.sp_reg)

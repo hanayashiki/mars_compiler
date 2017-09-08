@@ -94,15 +94,25 @@ def assign():
     """left '=' expr ';' """
     id_token = token.Id()
     lex_analyzer.match(id_token)
-    lex_analyzer.match(token.Equal())
 
     id_symbol = sym_table.get_symbol(id_token)
 
-    temp_var = new_temp("int")
+    if lex_analyzer.see(token.LeftBracket()):
+        offset_temp = new_temp("int")
+        array_fetch(id_symbol, offset_temp)
+        addr_tmp = new_temp("int")
+        gen.fetch_addr_instr(id_symbol, addr_tmp, offset_temp)
+        value_temp = offset_temp # reuse offset_temp
+        lex_analyzer.match(token.Equal())
+        expr(value_temp)
+        gen.save_by_addr(value_temp, addr_tmp)
+    else:
+        lex_analyzer.match(token.Equal())
+        temp_var = new_temp("int")
 
-    expr(temp_var)
+        expr(temp_var)
 
-    gen.move_instr(id_symbol, temp_var)
+        gen.move_instr(id_symbol, temp_var)
 
     lex_analyzer.match(token.Colon())
 
@@ -185,10 +195,18 @@ def factor(temp_var):
         gen.load_const_instr(temp_var, const_sym)
     elif lex_analyzer.match(id_token):
         id_sym = sym_table.get_symbol(id_token)
-        print("# ine got token: "+id_token.value)
-        print("# ine got symbol: "+id_sym.name)
-        temp_var.inherit(id_sym)
-        gen.load_var(id_sym)
+        #print("# ine got token: "+id_token.value)
+        #print("# ine got symbol: "+id_sym.name)
+        if lex_analyzer.see(token.LeftBracket()):
+            offset_sum_tmp = new_temp("int")
+            array_fetch(id_sym, offset_sum_tmp)
+            addr_tmp = new_temp("int")
+            gen.fetch_addr_instr(id_sym, addr_tmp, offset_sum_tmp) #get
+            gen.fetch_by_addr(temp_var, addr_tmp)
+            return
+        else:
+            temp_var.inherit(id_sym)
+            gen.load_var(id_sym)
 
 
 def sum(top_var):
@@ -218,3 +236,19 @@ def sum_inh(top_var, inh_left, op):
     elif op == '-':
         gen.sub_instr(left_tmp, inh_left, factor_tmp)
     sum_tail(top_var, left_tmp)
+
+
+def array_fetch(array_symbol, offset_sum_tmp):
+    current_type = array_symbol.type
+    gen.load_const_instr(offset_sum_tmp, 0)
+    while lex_analyzer.try_match(token.LeftBracket()):
+        offset_tmp = new_temp("int")
+        expr(offset_tmp)
+        lex_analyzer.match(token.RightBracket())
+        if isinstance(current_type, Array):
+            gen.mult_const_instr(offset_tmp, offset_tmp, current_type.elem.width)
+            gen.add_instr(offset_sum_tmp, offset_sum_tmp, offset_tmp)
+            current_type = current_type.elem
+        else:
+            break
+

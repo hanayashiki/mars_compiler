@@ -29,7 +29,6 @@ class Id:
         prt.offset = self.offset
 
 
-
 class Type:
     len = 1
     value = None
